@@ -37,7 +37,7 @@ import java.net.URI;
  * HttpClient httpClient = ...
  *
  * // create login strategy, which wil obtain SST via login
- * SstStrategy sstStrategy = new LoginSstStrategy("user@domain.com", "my secret");
+ * SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy("user@domain.com", "my secret");
  *
  * // wrap your HTTP client into GoodData HTTP client
  * HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
@@ -55,7 +55,7 @@ import java.net.URI;
  * HttpClient httpClient = ...
  *
  * // create login strategy (you must somehow obtain SST)
- * SstStrategy sstStrategy = new SimpleSstStrategy("my super-secure token");
+ * SSTRetrievalStrategy sstStrategy = new SimpleSSTRetrievalStrategy("my super-secure token");
  *
  * // wrap your HTTP client into GoodData HTTP client
  * HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
@@ -80,14 +80,14 @@ public class GoodDataHttpClient implements HttpClient {
 
     private final HttpClient httpClient;
 
-    private final SstStrategy sstStrategy;
+    private final SSTRetrievalStrategy sstStrategy;
 
     /**
      * Construct object.
      * @param httpClient Http client
      * @param sstStrategy super-secure token (SST) obtaining strategy
      */
-    public GoodDataHttpClient(final HttpClient httpClient, final SstStrategy sstStrategy) {
+    public GoodDataHttpClient(final HttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
         this.httpClient = httpClient;
         this.sstStrategy = sstStrategy;
     }
@@ -96,7 +96,7 @@ public class GoodDataHttpClient implements HttpClient {
      * Construct object.
      * @param sstStrategy super-secure token (SST) obtaining strategy
      */
-    public GoodDataHttpClient(final SstStrategy sstStrategy) {
+    public GoodDataHttpClient(final SSTRetrievalStrategy sstStrategy) {
         this(new DefaultHttpClient(), sstStrategy);
     }
 

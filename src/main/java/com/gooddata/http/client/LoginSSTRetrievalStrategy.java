@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * This strategy obtains super-secure token via login.
  */
-public class LoginSstStrategy implements SstStrategy {
+public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
 
     public static final String LOGIN_URL = "/gdc/account/login";
 
@@ -33,7 +33,7 @@ public class LoginSstStrategy implements SstStrategy {
 
     private final String password;
 
-    public LoginSstStrategy(final String login, final String password) {
+    public LoginSSTRetrievalStrategy(final String login, final String password) {
         this.login = login;
         this.password = password;
     }
@@ -42,7 +42,7 @@ public class LoginSstStrategy implements SstStrategy {
     public void obtainSst(final HttpClient httpClient, final HttpHost httpHost) {
         log.debug("Obtaining STT");
         final HttpPost postLogin = new HttpPost(LOGIN_URL);
-        final LoginDto loginDto = new LoginDto(login, password, 0);
+        final LoginDTO loginDto = new LoginDTO(login, password, 0);
         try {
             final HttpEntity requestEntity = new StringEntity(mapper.writeValueAsString(loginDto), ContentType.APPLICATION_JSON);
             postLogin.setEntity(requestEntity);

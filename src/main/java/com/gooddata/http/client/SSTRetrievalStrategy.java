@@ -10,7 +10,7 @@ import org.apache.http.client.HttpClient;
 /**
  * Interface for class which encapsulates obtaining SST.
  */
-public interface SstStrategy {
+public interface SSTRetrievalStrategy {
 
     /**
      * Sets SST cookie to HTTP client.

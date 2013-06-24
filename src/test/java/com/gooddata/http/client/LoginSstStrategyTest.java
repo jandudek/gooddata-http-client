@@ -32,7 +32,7 @@ public class LoginSstStrategyTest {
 
     public static final String PASSWORD = "mysecret";
     public static final String LOGIN = "user@server.com";
-    private LoginSstStrategy sstStrategy;
+    private LoginSSTRetrievalStrategy sstStrategy;
 
     @Mock
     public HttpClient httpClient;
@@ -45,7 +45,7 @@ public class LoginSstStrategyTest {
 
     @Before
     public void setUp() {
-        sstStrategy = new LoginSstStrategy(LOGIN, PASSWORD);
+        sstStrategy = new LoginSSTRetrievalStrategy(LOGIN, PASSWORD);
         host = new HttpHost("server.com", 123);
     }
 

@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonTypeName;
  */
 @JsonTypeInfo(include= JsonTypeInfo.As.WRAPPER_OBJECT, use= JsonTypeInfo.Id.NAME)
 @JsonTypeName("postUserLogin")
-public class LoginDto {
+public class LoginDTO {
 
     private final String login;
 
@@ -29,7 +29,7 @@ public class LoginDto {
      * @param remember token validity period (0 - short period, 1 - long period)
      */
     @JsonCreator
-    public LoginDto(
+    public LoginDTO(
             @JsonProperty("login") final String login,
             @JsonProperty("password") final String password,
             @JsonProperty("remember") final Integer remember) {

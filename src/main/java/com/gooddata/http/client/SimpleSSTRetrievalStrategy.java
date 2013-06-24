@@ -12,20 +12,20 @@ import static org.apache.commons.lang.Validate.notNull;
 /**
  * Provides super-secure token (SST)
  */
-public class SimpleSstStrategy implements SstStrategy {
+public class SimpleSSTRetrievalStrategy implements SSTRetrievalStrategy {
 
     private String sst;
 
     /**
      * Creates new instance with empty SST.
      */
-    public SimpleSstStrategy() { }
+    public SimpleSSTRetrievalStrategy() { }
 
     /**
      *
      * @param sst super-secure token (SST)
      */
-    public SimpleSstStrategy(final String sst) {
+    public SimpleSSTRetrievalStrategy(final String sst) {
         setSst(sst);
     }
 

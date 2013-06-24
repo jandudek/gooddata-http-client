@@ -21,7 +21,7 @@ public class SimpleSstStrategyTest {
 
     private HttpHost host;
 
-    private SimpleSstStrategy sstStrategy;
+    private SimpleSSTRetrievalStrategy sstStrategy;
 
     private DefaultHttpClient httpClient;
 
@@ -33,7 +33,7 @@ public class SimpleSstStrategyTest {
 
     @Test
     public void obtainSst() {
-        sstStrategy = new SimpleSstStrategy(TOKEN);
+        sstStrategy = new SimpleSSTRetrievalStrategy(TOKEN);
         sstStrategy.obtainSst(httpClient, host);
 
         checkCookie();
@@ -41,18 +41,18 @@ public class SimpleSstStrategyTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void constructor_nullSst() {
-        new SimpleSstStrategy(null);
+        new SimpleSSTRetrievalStrategy(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void obtainSst_null() {
-        sstStrategy = new SimpleSstStrategy();
+        sstStrategy = new SimpleSSTRetrievalStrategy();
         sstStrategy.obtainSst(httpClient, host);
     }
 
     @Test
     public void setSst() {
-        sstStrategy = new SimpleSstStrategy();
+        sstStrategy = new SimpleSSTRetrievalStrategy();
         sstStrategy.setSst(TOKEN);
         sstStrategy.obtainSst(httpClient, host);
 

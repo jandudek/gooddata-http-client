@@ -41,7 +41,7 @@ public class GoodDataHttpClientTest {
     public HttpClient httpClient;
 
     @Mock
-    public SstStrategy sstStrategy;
+    public SSTRetrievalStrategy sstStrategy;
 
     private HttpResponse ttChallengeResponse;
 
