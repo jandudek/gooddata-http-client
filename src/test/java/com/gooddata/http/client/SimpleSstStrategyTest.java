@@ -44,21 +44,6 @@ public class SimpleSstStrategyTest {
         new SimpleSSTRetrievalStrategy(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void obtainSst_null() {
-        sstStrategy = new SimpleSSTRetrievalStrategy();
-        sstStrategy.obtainSst(httpClient, host);
-    }
-
-    @Test
-    public void setSst() {
-        sstStrategy = new SimpleSSTRetrievalStrategy();
-        sstStrategy.setSst(TOKEN);
-        sstStrategy.obtainSst(httpClient, host);
-
-        checkCookie();
-    }
-
     private void checkCookie() {
         final Cookie cookie = httpClient.getCookieStore().getCookies().get(0);
         assertThat(DOMAIN, is(cookie.getDomain()));
@@ -67,4 +52,5 @@ public class SimpleSstStrategyTest {
         assertThat("/gdc/account", is(cookie.getPath()));
         assertThat("GDCAuthSST", is(cookie.getName()));
     }
+
 }

@@ -10,10 +10,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
     }
 
     @Override
-    public void obtainSst(final HttpClient httpClient, final HttpHost httpHost) {
+    public void obtainSst(final AbstractHttpClient httpClient, final HttpHost httpHost) {
         log.debug("Obtaining STT");
         final HttpPost postLogin = new HttpPost(LOGIN_URL);
         final LoginDTO loginDto = new LoginDTO(login, password, 0);

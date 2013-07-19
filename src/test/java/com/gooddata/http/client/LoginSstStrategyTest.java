@@ -10,8 +10,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.Before;
@@ -25,6 +25,7 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +36,7 @@ public class LoginSstStrategyTest {
     private LoginSSTRetrievalStrategy sstStrategy;
 
     @Mock
-    public HttpClient httpClient;
-
-    public HttpResponse response;
+    public AbstractHttpClient httpClient;
 
     public StatusLine statusLine;
 
@@ -53,8 +52,8 @@ public class LoginSstStrategyTest {
     public void obtainSst() throws IOException {
         MockitoAnnotations.initMocks(this);
         statusLine = new BasicStatusLine(new ProtocolVersion("https", 1, 1), HttpStatus.SC_OK, "OK");
-        response = new BasicHttpResponse(statusLine);
-        when(httpClient.execute(any(HttpHost.class), any(HttpPost.class))).thenReturn(response);
+        final HttpResponse response = new BasicHttpResponse(statusLine);
+        when(httpClient.execute(isA(HttpHost.class), isA(HttpPost.class))).thenReturn(response);
 
         sstStrategy.obtainSst(httpClient, host);
 
@@ -78,7 +77,7 @@ public class LoginSstStrategyTest {
     public void obtainSst_badLogin() throws IOException {
         MockitoAnnotations.initMocks(this);
         statusLine = new BasicStatusLine(new ProtocolVersion("https", 1, 1), HttpStatus.SC_BAD_REQUEST, "Bad Request");
-        response = new BasicHttpResponse(statusLine);
+        final HttpResponse response = new BasicHttpResponse(statusLine);
         when(httpClient.execute(any(HttpHost.class), any(HttpPost.class))).thenReturn(response);
 
         sstStrategy.obtainSst(httpClient, host);

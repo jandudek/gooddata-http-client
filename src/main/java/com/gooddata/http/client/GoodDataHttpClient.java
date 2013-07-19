@@ -18,6 +18,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
@@ -78,7 +79,7 @@ public class GoodDataHttpClient implements HttpClient {
 
     private final Log log = LogFactory.getLog(getClass());
 
-    private final HttpClient httpClient;
+    private final AbstractHttpClient httpClient;
 
     private final SSTRetrievalStrategy sstStrategy;
 
@@ -87,7 +88,7 @@ public class GoodDataHttpClient implements HttpClient {
      * @param httpClient Http client
      * @param sstStrategy super-secure token (SST) obtaining strategy
      */
-    public GoodDataHttpClient(final HttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
+    public GoodDataHttpClient(final AbstractHttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
         this.httpClient = httpClient;
         this.sstStrategy = sstStrategy;
     }

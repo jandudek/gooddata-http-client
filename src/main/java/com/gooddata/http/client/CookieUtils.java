@@ -4,7 +4,6 @@
  */
 package com.gooddata.http.client;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -25,16 +24,11 @@ public class CookieUtils {
      * @param domain domain
      * @throws GoodDataAuthException http client does not support cookie
      */
-    static void replaceSst(final String sst, final HttpClient httpClient, final String domain) {
-        try {
-            final AbstractHttpClient abstractHttpClient = (AbstractHttpClient) httpClient;
-            final BasicClientCookie cookie = new BasicClientCookie(SST_COOKIE_NAME, sst);
-            cookie.setSecure(true);
-            cookie.setPath(SST_COOKIE_PATH);
-            cookie.setDomain(domain);
-            abstractHttpClient.getCookieStore().addCookie(cookie);
-        } catch (ClassCastException e) {
-            throw new GoodDataAuthException("HTTP Client does not support cookies!", e);
-        }
+    static void replaceSst(final String sst, final AbstractHttpClient httpClient, final String domain) {
+        final BasicClientCookie cookie = new BasicClientCookie(SST_COOKIE_NAME, sst);
+        cookie.setSecure(true);
+        cookie.setPath(SST_COOKIE_PATH);
+        cookie.setDomain(domain);
+        httpClient.getCookieStore().addCookie(cookie);
     }
 }

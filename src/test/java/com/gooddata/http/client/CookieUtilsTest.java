@@ -4,32 +4,25 @@
  */
 package com.gooddata.http.client;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class CookieUtilsTest {
 
     public static final String DOMAIN = "server.com";
     public static final String SST = "sst_token";
-    public HttpClient httpClient;
+    public AbstractHttpClient httpClient;
 
     @Test
     public void replaceSst() {
         httpClient = new DefaultHttpClient();
         CookieUtils.replaceSst(SST, httpClient, DOMAIN);
         checkCookie();
-    }
-
-    @Test(expected = GoodDataAuthException.class)
-    public void replaceSst_doesNotSupportCookies() {
-        httpClient = mock(HttpClient.class);
-        CookieUtils.replaceSst(SST, httpClient, DOMAIN);
     }
 
     private void checkCookie() {

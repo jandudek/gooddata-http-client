@@ -5,7 +5,7 @@
 package com.gooddata.http.client;
 
 import org.apache.http.HttpHost;
-import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.AbstractHttpClient;
 
 import static org.apache.commons.lang.Validate.notNull;
 
@@ -14,34 +14,20 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 public class SimpleSSTRetrievalStrategy implements SSTRetrievalStrategy {
 
-    private String sst;
+    private final String sst;
 
     /**
-     * Creates new instance with empty SST.
-     */
-    public SimpleSSTRetrievalStrategy() { }
-
-    /**
-     *
+     * Creates new instance.
      * @param sst super-secure token (SST)
      */
     public SimpleSSTRetrievalStrategy(final String sst) {
-        setSst(sst);
+        this.sst = sst;
     }
 
     @Override
-    public void obtainSst(final HttpClient httpClient, final HttpHost host) {
+    public void obtainSst(AbstractHttpClient httpClient, HttpHost httpHost) {
         notNull(sst, "No SST set.");
-        CookieUtils.replaceSst(sst, httpClient, host.getHostName());
+        CookieUtils.replaceSst(sst, httpClient, httpHost.getHostName());
     }
 
-    /**
-     * Sets new SST.
-     * @param sst new SST
-     * @throws IllegalArgumentException if <code>sst</code> is null
-     */
-    public void setSst(final String sst) {
-        notNull(sst, "Super-secure token cannot be null");
-        this.sst = sst;
-    }
 }
