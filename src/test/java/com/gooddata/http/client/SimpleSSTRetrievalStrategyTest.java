@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class SimpleSstStrategyTest {
+public class SimpleSSTRetrievalStrategyTest {
 
     public static final String TOKEN = "sst token";
     public static final String DOMAIN = "server.com";

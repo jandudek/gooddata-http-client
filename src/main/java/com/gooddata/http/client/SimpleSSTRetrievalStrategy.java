@@ -21,12 +21,12 @@ public class SimpleSSTRetrievalStrategy implements SSTRetrievalStrategy {
      * @param sst super-secure token (SST)
      */
     public SimpleSSTRetrievalStrategy(final String sst) {
+        notNull(sst, "No SST set.");
         this.sst = sst;
     }
 
     @Override
     public void obtainSst(AbstractHttpClient httpClient, HttpHost httpHost) {
-        notNull(sst, "No SST set.");
         CookieUtils.replaceSst(sst, httpClient, httpHost.getHostName());
     }
 
