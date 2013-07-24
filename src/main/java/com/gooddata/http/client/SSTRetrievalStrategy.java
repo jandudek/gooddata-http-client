@@ -4,9 +4,6 @@
  */
 package com.gooddata.http.client;
 
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.AbstractHttpClient;
-
 /**
  * Interface for class which encapsulates SST retrival.
  */
@@ -16,6 +13,6 @@ public interface SSTRetrievalStrategy {
      * Sets SST cookie to HTTP client.
      * @return SST
      */
-    void obtainSst(AbstractHttpClient httpClient, HttpHost httpHost);
+    String obtainSst();
 
 }

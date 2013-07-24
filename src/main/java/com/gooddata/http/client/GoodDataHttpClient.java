@@ -137,7 +137,8 @@ public class GoodDataHttpClient implements HttpClient {
     }
 
     private void authenticate(final HttpHost httpHost) {
-        sstStrategy.obtainSst(httpClient, httpHost);
+        final String sst = sstStrategy.obtainSst();
+        CookieUtils.replaceSst(sst, httpClient, httpHost.getHostName());
         if (!refreshTt(httpHost)) {
             throw new GoodDataAuthException("Unable to obtain TT after successfully obtained SST");
         }

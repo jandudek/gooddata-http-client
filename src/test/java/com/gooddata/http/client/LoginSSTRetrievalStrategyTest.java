@@ -46,7 +46,7 @@ public class LoginSSTRetrievalStrategyTest {
 
     @Before
     public void setUp() {
-        sstStrategy = new LoginSSTRetrievalStrategy(LOGIN, PASSWORD);
+        sstStrategy = new LoginSSTRetrievalStrategy(httpClient, host, LOGIN, PASSWORD);
         host = new HttpHost("server.com", 123);
     }
 
@@ -57,7 +57,7 @@ public class LoginSSTRetrievalStrategyTest {
         final HttpResponse response = new BasicHttpResponse(statusLine);
         when(httpClient.execute(isA(HttpHost.class), isA(HttpPost.class))).thenReturn(response);
 
-        sstStrategy.obtainSst(httpClient, host);
+        sstStrategy.obtainSst();
 
         final ArgumentCaptor<HttpHost> hostCaptor = ArgumentCaptor.forClass(HttpHost.class);
         final ArgumentCaptor<HttpPost> postCaptor = ArgumentCaptor.forClass(HttpPost.class);
@@ -82,7 +82,7 @@ public class LoginSSTRetrievalStrategyTest {
         final HttpResponse response = new BasicHttpResponse(statusLine);
         when(httpClient.execute(any(HttpHost.class), any(HttpPost.class))).thenReturn(response);
 
-        sstStrategy.obtainSst(httpClient, host);
+        sstStrategy.obtainSst();
 
     }
 }

@@ -4,9 +4,6 @@
  */
 package com.gooddata.http.client;
 
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.AbstractHttpClient;
-
 import static org.apache.commons.lang.Validate.notNull;
 
 /**
@@ -26,8 +23,8 @@ public class SimpleSSTRetrievalStrategy implements SSTRetrievalStrategy {
     }
 
     @Override
-    public void obtainSst(AbstractHttpClient httpClient, HttpHost httpHost) {
-        CookieUtils.replaceSst(sst, httpClient, httpHost.getHostName());
+    public String obtainSst() {
+        return sst;
     }
 
 }

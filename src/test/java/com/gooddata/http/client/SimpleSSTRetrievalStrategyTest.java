@@ -5,13 +5,11 @@
 package com.gooddata.http.client;
 
 import org.apache.http.HttpHost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 
 public class SimpleSSTRetrievalStrategyTest {
@@ -34,23 +32,12 @@ public class SimpleSSTRetrievalStrategyTest {
     @Test
     public void obtainSst() {
         sstStrategy = new SimpleSSTRetrievalStrategy(TOKEN);
-        sstStrategy.obtainSst(httpClient, host);
-
-        checkCookie();
+        assertEquals(TOKEN, sstStrategy.obtainSst());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructor_nullSst() {
         new SimpleSSTRetrievalStrategy(null);
-    }
-
-    private void checkCookie() {
-        final Cookie cookie = httpClient.getCookieStore().getCookies().get(0);
-        assertThat(DOMAIN, is(cookie.getDomain()));
-        assertThat(TOKEN, is(cookie.getValue()));
-        assertThat(true, is(cookie.isSecure()));
-        assertThat("/gdc/account", is(cookie.getPath()));
-        assertThat("GDCAuthSST", is(cookie.getName()));
     }
 
 }

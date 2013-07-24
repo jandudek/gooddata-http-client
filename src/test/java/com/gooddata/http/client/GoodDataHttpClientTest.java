@@ -93,7 +93,7 @@ public class GoodDataHttpClientTest {
 
         assertEquals(okResponse, goodDataHttpClient.execute(host, get));
 
-        verify(sstStrategy, only()).obtainSst(eq(httpClient), eq(host));
+        verify(sstStrategy, only()).obtainSst();
         verify(httpClient, times(2)).execute(eq(host), eq(get), any(HttpContext.class));
         verify(httpClient, times(2)).execute(eq(host), any(HttpRequest.class));
     }
@@ -107,7 +107,7 @@ public class GoodDataHttpClientTest {
 
         goodDataHttpClient.execute(host, get);
 
-        verify(sstStrategy, only()).obtainSst(eq(httpClient), eq(host));
+        verify(sstStrategy, only()).obtainSst();
         verify(httpClient, only()).execute(eq(host), eq(get), any(HttpContext.class));
         verify(httpClient, only()).execute(eq(host), any(HttpRequest.class));
     }
@@ -130,7 +130,7 @@ public class GoodDataHttpClientTest {
 
         assertEquals(response401, goodDataHttpClient.execute(host, get));
 
-        verify(sstStrategy, never()).obtainSst(eq(httpClient), eq(host));
+        verify(sstStrategy, never()).obtainSst();
         verify(httpClient, only()).execute(eq(host), eq(get), any(HttpContext.class));
     }
 
@@ -145,7 +145,7 @@ public class GoodDataHttpClientTest {
 
         assertEquals(okResponse, goodDataHttpClient.execute(host, get));
 
-        verify(sstStrategy, never()).obtainSst(eq(httpClient), eq(host));
+        verify(sstStrategy, never()).obtainSst();
         verify(httpClient, only()).execute(eq(host), eq(get), any(HttpContext.class));
     }
 
@@ -159,7 +159,7 @@ public class GoodDataHttpClientTest {
 
         assertEquals(okResponse, goodDataHttpClient.execute(host, get));
 
-        verify(sstStrategy, never()).obtainSst(eq(httpClient), eq(host));
+        verify(sstStrategy, never()).obtainSst();
         verify(httpClient, times(2)).execute(eq(host), eq(get), any(HttpContext.class));
         verify(httpClient, times(1)).execute(eq(host), any(HttpRequest.class));
     }

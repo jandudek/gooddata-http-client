@@ -51,7 +51,6 @@ public class GoodDataHttpClientIntegrationTest {
 
     private String jadlerLogin;
     private String jadlerPassword;
-    private String jadlerSst;
     private HttpHost jadlerHost;
 
     @Before
@@ -100,7 +99,7 @@ public class GoodDataHttpClientIntegrationTest {
                 .withContentType("application/json");
 
         final DefaultHttpClient httpClient = new DefaultHttpClient();
-        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(jadlerLogin, jadlerPassword);
+        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), jadlerHost, jadlerLogin, jadlerPassword);
         final HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
 
         performGet(client, jadlerHost, GDC_PROJECTS_URL, HttpStatus.SC_OK);
@@ -149,7 +148,7 @@ public class GoodDataHttpClientIntegrationTest {
                 .withHeader("Set-Cookie", "GDCAuthTT=; path=/gdc; expires=Sat, 18-May-2013 09:10:00 GMT; secure; HttpOnly");
 
         final DefaultHttpClient httpClient = new DefaultHttpClient();
-        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(jadlerLogin, jadlerPassword);
+        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), jadlerHost, jadlerLogin, jadlerPassword);
         final HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
 
         performGet(client, jadlerHost, GDC_PROJECTS_URL, HttpStatus.SC_OK);
@@ -169,7 +168,7 @@ public class GoodDataHttpClientIntegrationTest {
                 .withEncoding(Charset.forName("UTF-8"))
                 .withContentType("application/json; charset=UTF-8");
         final DefaultHttpClient httpClient = new DefaultHttpClient();
-        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(jadlerLogin, jadlerPassword);
+        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), jadlerHost, jadlerLogin, jadlerPassword);
         final HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
 
         performGet(client, jadlerHost, GDC_PROJECTS_URL, HttpStatus.SC_OK);
@@ -184,7 +183,7 @@ public class GoodDataHttpClientIntegrationTest {
     @Test
     public void gdcLogin() throws IOException {
         final DefaultHttpClient httpClient = new DefaultHttpClient();
-        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(login, password);
+        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), jadlerHost, login, password);
         final HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
 
         assertNull(getCookieByPath(httpClient, GDC_ACCOUNT_URL));
