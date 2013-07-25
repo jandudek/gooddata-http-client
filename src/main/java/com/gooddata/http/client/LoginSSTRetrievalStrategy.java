@@ -26,6 +26,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 
+import static org.apache.commons.lang.Validate.notNull;
+
 /**
  * This strategy obtains super-secure token via login and password.
  */
@@ -46,6 +48,10 @@ public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
     private final HttpClient httpClient;
 
     public LoginSSTRetrievalStrategy(final HttpClient httpClient, final HttpHost httpHost, final String login, final String password) {
+        notNull(httpClient, "HTTP Client cannot be null");
+        notNull(httpHost, "HTTP host cannot be null");
+        notNull(login, "Login cannot be null");
+        notNull(password, "Password cannot be null");
         this.login = login;
         this.password = password;
         this.httpHost = httpHost;

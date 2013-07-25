@@ -13,14 +13,18 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AUTH;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -83,6 +87,8 @@ public class GoodDataHttpClient implements HttpClient {
 
     private final SSTRetrievalStrategy sstStrategy;
 
+    private final HttpContext context;
+
     /**
      * Construct object.
      * @param httpClient Http client
@@ -91,6 +97,9 @@ public class GoodDataHttpClient implements HttpClient {
     public GoodDataHttpClient(final AbstractHttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
         this.httpClient = httpClient;
         this.sstStrategy = sstStrategy;
+        context = new BasicHttpContext();
+        final CookieStore cookieStore = new BasicCookieStore();
+        context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
     }
 
     /**
@@ -138,7 +147,7 @@ public class GoodDataHttpClient implements HttpClient {
 
     private void authenticate(final HttpHost httpHost) {
         final String sst = sstStrategy.obtainSst();
-        CookieUtils.replaceSst(sst, httpClient, httpHost.getHostName());
+        CookieUtils.replaceSst(sst, context, httpHost.getHostName());
         if (!refreshTt(httpHost)) {
             throw new GoodDataAuthException("Unable to obtain TT after successfully obtained SST");
         }
@@ -159,7 +168,7 @@ public class GoodDataHttpClient implements HttpClient {
         final boolean result;
         final HttpGet getTT = new HttpGet(TOKEN_URL);
         try {
-            final HttpResponse response = httpClient.execute(httpHost, getTT);
+            final HttpResponse response = httpClient.execute(httpHost, getTT, context);
             final int status = response.getStatusLine().getStatusCode();
             switch (status) {
                 case HttpStatus.SC_OK:

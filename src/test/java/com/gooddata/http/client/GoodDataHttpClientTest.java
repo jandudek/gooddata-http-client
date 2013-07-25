@@ -30,7 +30,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-//TODO: uncomment and fix test, move to jadler test
+//TODO: uncomment and fix test or move to jadler test
 @Ignore
 public class GoodDataHttpClientTest {
 

@@ -12,6 +12,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.SM;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.Before;
@@ -33,6 +34,7 @@ public class LoginSSTRetrievalStrategyTest {
 
     public static final String PASSWORD = "mysecret";
     public static final String LOGIN = "user@server.com";
+
     private LoginSSTRetrievalStrategy sstStrategy;
 
     @Mock
@@ -44,18 +46,19 @@ public class LoginSSTRetrievalStrategyTest {
 
     @Before
     public void setUp() {
-        sstStrategy = new LoginSSTRetrievalStrategy(httpClient, host, LOGIN, PASSWORD);
+        MockitoAnnotations.initMocks(this);
         host = new HttpHost("server.com", 123);
+        sstStrategy = new LoginSSTRetrievalStrategy(httpClient, host, LOGIN, PASSWORD);
     }
 
     @Test
     public void obtainSst() throws IOException {
-        MockitoAnnotations.initMocks(this);
         statusLine = new BasicStatusLine(new ProtocolVersion("https", 1, 1), HttpStatus.SC_OK, "OK");
         final HttpResponse response = new BasicHttpResponse(statusLine);
+        response.setHeader(SM.SET_COOKIE, "GDCAuthSST=xxxtopsecretcookieSST; path=/gdc/account; secure; HttpOnly");
         when(httpClient.execute(isA(HttpHost.class), isA(HttpPost.class))).thenReturn(response);
 
-        sstStrategy.obtainSst();
+        assertEquals("xxxtopsecretcookieSST", sstStrategy.obtainSst());
 
         final ArgumentCaptor<HttpHost> hostCaptor = ArgumentCaptor.forClass(HttpHost.class);
         final ArgumentCaptor<HttpPost> postCaptor = ArgumentCaptor.forClass(HttpPost.class);
@@ -75,7 +78,6 @@ public class LoginSSTRetrievalStrategyTest {
 
     @Test(expected = GoodDataAuthException.class)
     public void obtainSst_badLogin() throws IOException {
-        MockitoAnnotations.initMocks(this);
         statusLine = new BasicStatusLine(new ProtocolVersion("https", 1, 1), HttpStatus.SC_BAD_REQUEST, "Bad Request");
         final HttpResponse response = new BasicHttpResponse(statusLine);
         when(httpClient.execute(any(HttpHost.class), any(HttpPost.class))).thenReturn(response);

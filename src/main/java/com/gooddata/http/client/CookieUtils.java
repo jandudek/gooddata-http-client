@@ -4,8 +4,10 @@
  */
 package com.gooddata.http.client;
 
-import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.HttpContext;
 
 /**
  * Contains handy methods .
@@ -17,18 +19,24 @@ public class CookieUtils {
 
     private CookieUtils() { }
 
-    /**
-     * Add (or replace) super-secure cookie to http client.
-     * @param sst super-secure token
-     * @param httpClient http client
-     * @param domain domain
-     * @throws GoodDataAuthException http client does not support cookie
-     */
-    static void replaceSst(final String sst, final AbstractHttpClient httpClient, final String domain) {
+    private static void replaceSst(final String sst, final CookieStore cookieStore, final String domain) {
         final BasicClientCookie cookie = new BasicClientCookie(SST_COOKIE_NAME, sst);
         cookie.setSecure(true);
         cookie.setPath(SST_COOKIE_PATH);
         cookie.setDomain(domain);
-        httpClient.getCookieStore().addCookie(cookie);
+        cookieStore.addCookie(cookie);
     }
+
+    /**
+     * Add (or replace) super-secure cookie to http client.
+     * @param sst super-secure token
+     * @param context HTTP context
+     * @param domain domain
+     * @throws GoodDataAuthException http client does not support cookie
+     */
+    static void replaceSst(final String sst, final HttpContext context, final String domain) {
+        CookieStore cookieStore = (CookieStore) context.getAttribute(ClientContext.COOKIE_STORE);
+        replaceSst(sst, cookieStore, domain);
+    }
+
 }
