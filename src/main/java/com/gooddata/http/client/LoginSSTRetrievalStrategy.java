@@ -11,6 +11,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.cookie.CookieOrigin;
@@ -19,15 +20,14 @@ import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.cookie.SM;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.cookie.BrowserCompatSpec;
+import org.apache.http.impl.cookie.BestMatchSpec;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * This strategy obtains super-secure token via login.
+ * This strategy obtains super-secure token via login and password.
  */
 public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
 
@@ -43,9 +43,9 @@ public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
 
     private final HttpHost httpHost;
 
-    private final AbstractHttpClient httpClient;
+    private final HttpClient httpClient;
 
-    public LoginSSTRetrievalStrategy(final AbstractHttpClient httpClient, final HttpHost httpHost, final String login, final String password) {
+    public LoginSSTRetrievalStrategy(final HttpClient httpClient, final HttpHost httpHost, final String login, final String password) {
         this.login = login;
         this.password = password;
         this.httpHost = httpHost;
@@ -65,16 +65,7 @@ public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
             if (status != HttpStatus.SC_OK) {
                 throw new GoodDataAuthException("Unable to login: " + status);
             }
-            String sst = null;
-            CookieSpec cookieSpec = new BrowserCompatSpec();
-            CookieOrigin origin = new CookieOrigin(httpHost.getHostName(), httpHost.getPort(), "/gdc", true);
-            for (Header header : response.getHeaders(SM.SET_COOKIE)) {
-                List<Cookie> cookies = cookieSpec.parse(header, origin);
-                if (cookies.size() > 0) {
-                    sst = cookies.get(0).getValue();
-                    break;
-                }
-            }
+            final String sst = extractSST(response);
             if (sst == null) {
                 throw new GoodDataAuthException("Unable to login. Missing SST Set-Cookie header.");
             }
@@ -86,5 +77,19 @@ public class LoginSSTRetrievalStrategy implements SSTRetrievalStrategy {
         } finally {
             postLogin.releaseConnection();
         }
+    }
+
+    private String extractSST(final HttpResponse response) throws MalformedCookieException {
+        String sst = null;
+        final CookieSpec cookieSpec = new BestMatchSpec();
+        final CookieOrigin cookieOrigin = new CookieOrigin(httpHost.getHostName(), httpHost.getPort(), "/gdc/account", true);
+        for (Header header : response.getHeaders(SM.SET_COOKIE)) {
+            final List<Cookie> cookies = cookieSpec.parse(header, cookieOrigin);
+            if (cookies.size() > 0 && CookieUtils.SST_COOKIE_NAME.equals(cookies.get(0).getName())) {
+                sst = cookies.get(0).getValue();
+                break;
+            }
+        }
+        return sst;
     }
 }

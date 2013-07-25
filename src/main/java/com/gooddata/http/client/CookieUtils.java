@@ -12,7 +12,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
  */
 public class CookieUtils {
 
-    private static final String SST_COOKIE_NAME = "GDCAuthSST";
+    public static final String SST_COOKIE_NAME = "GDCAuthSST";
     public static final String SST_COOKIE_PATH = "/gdc/account";
 
     private CookieUtils() { }

@@ -183,7 +183,7 @@ public class GoodDataHttpClientIntegrationTest {
     @Test
     public void gdcLogin() throws IOException {
         final DefaultHttpClient httpClient = new DefaultHttpClient();
-        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), jadlerHost, login, password);
+        final SSTRetrievalStrategy sstStrategy = new LoginSSTRetrievalStrategy(new DefaultHttpClient(), httpHost, login, password);
         final HttpClient client = new GoodDataHttpClient(httpClient, sstStrategy);
 
         assertNull(getCookieByPath(httpClient, GDC_ACCOUNT_URL));
