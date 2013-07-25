@@ -20,7 +20,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpParams;
@@ -83,7 +82,7 @@ public class GoodDataHttpClient implements HttpClient {
 
     private final Log log = LogFactory.getLog(getClass());
 
-    private final AbstractHttpClient httpClient;
+    private final HttpClient httpClient;
 
     private final SSTRetrievalStrategy sstStrategy;
 
@@ -94,7 +93,7 @@ public class GoodDataHttpClient implements HttpClient {
      * @param httpClient Http client
      * @param sstStrategy super-secure token (SST) obtaining strategy
      */
-    public GoodDataHttpClient(final AbstractHttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
+    public GoodDataHttpClient(final HttpClient httpClient, final SSTRetrievalStrategy sstStrategy) {
         this.httpClient = httpClient;
         this.sstStrategy = sstStrategy;
         context = new BasicHttpContext();
@@ -200,13 +199,12 @@ public class GoodDataHttpClient implements HttpClient {
 
     @Override
     public HttpResponse execute(HttpHost target, HttpRequest request) throws IOException, ClientProtocolException {
-        HttpContext defaultContext = null;
-        return execute(target, request, defaultContext);
+        return execute(target, request, context);
     }
 
     @Override
     public <T> T execute(HttpHost target, HttpRequest request, ResponseHandler<? extends T> responseHandler) throws IOException {
-        return execute(target, request, responseHandler, null);
+        return execute(target, request, responseHandler, context);
     }
 
     @Override
@@ -231,7 +229,7 @@ public class GoodDataHttpClient implements HttpClient {
 
     @Override
     public <T> T execute(HttpUriRequest request, ResponseHandler<? extends T> responseHandler) throws IOException {
-        return execute(request, responseHandler, null);
+        return execute(request, responseHandler, context);
     }
 
     @Override
