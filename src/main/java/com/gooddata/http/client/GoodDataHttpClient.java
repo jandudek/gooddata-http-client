@@ -198,7 +198,6 @@ public class GoodDataHttpClient implements HttpClient {
      */
     private boolean refreshTt(final HttpHost httpHost) {
         log.debug("Obtaining TT");
-        final boolean result;
         final HttpGet getTT = new HttpGet(TOKEN_URL);
         try {
             final HttpResponse response = httpClient.execute(httpHost, getTT, context);

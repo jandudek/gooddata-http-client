@@ -62,7 +62,7 @@ public class GoodDataHttpClientIntegrationTest {
     public void getProjectsBadLogin() throws IOException {
         onRequest()
                 .havingMethodEqualTo("GET")
-                .havingURIEqualTo(GDC_PROJECTS_URL)
+                .havingPathEqualTo(GDC_PROJECTS_URL)
                 .havingHeaderEqualTo("Accept", "application/json")
         .respond()
                 .withStatus(401)
@@ -73,7 +73,7 @@ public class GoodDataHttpClientIntegrationTest {
 
         onRequest()
                 .havingMethodEqualTo("GET")
-                .havingURIEqualTo(GDC_TOKEN_URL)
+                .havingPathEqualTo(GDC_TOKEN_URL)
         .respond()
                 .withStatus(401)
                 .withHeader("WWW-Authenticate", "GoodData realm=\"GoodData API\" cookie=GDCAuthSST")
@@ -82,7 +82,7 @@ public class GoodDataHttpClientIntegrationTest {
 
         onRequest()
                 .havingMethodEqualTo("POST")
-                .havingURIEqualTo(GDC_LOGIN_URL)
+                .havingPathEqualTo(GDC_LOGIN_URL)
         .respond()
                 .withStatus(401)
                 .withHeader("WWW-Authenticate", "GoodData realm=\"GoodData API\"")
@@ -100,7 +100,7 @@ public class GoodDataHttpClientIntegrationTest {
     public void getProjectOkloginAndTtRefresh() throws IOException {
         onRequest()
                 .havingMethodEqualTo("GET")
-                .havingURIEqualTo(GDC_PROJECTS_URL)
+                .havingPathEqualTo(GDC_PROJECTS_URL)
                 .havingHeaderEqualTo("Accept", "application/json")
         .respond()
                 .withStatus(401)
@@ -116,7 +116,7 @@ public class GoodDataHttpClientIntegrationTest {
 
         onRequest()
                 .havingMethodEqualTo("GET")
-                .havingURIEqualTo(GDC_TOKEN_URL)
+                .havingPathEqualTo(GDC_TOKEN_URL)
         .respond()
                 .withStatus(401)
                 .withHeader("WWW-Authenticate", "GoodData realm=\"GoodData API\" cookie=GDCAuthSST")
@@ -132,7 +132,7 @@ public class GoodDataHttpClientIntegrationTest {
 
         onRequest()
                 .havingMethodEqualTo("POST")
-                .havingURIEqualTo(GDC_LOGIN_URL)
+                .havingPathEqualTo(GDC_LOGIN_URL)
                 .havingHeaderEqualTo("Accept", "application/json; charset=UTF-8")
                 .havingBodyEqualTo("{\"postUserLogin\":{\"login\":\"user@email.com\",\"password\":\"top secret\",\"remember\":0}}")
         .respond()
@@ -154,7 +154,7 @@ public class GoodDataHttpClientIntegrationTest {
     public void getProjectOkNoTtRefresh() throws IOException {
         onRequest()
                 .havingMethodEqualTo("GET")
-                .havingURIEqualTo(GDC_PROJECTS_URL)
+                .havingPathEqualTo(GDC_PROJECTS_URL)
                 .havingHeaderEqualTo("Accept", "application/json")
         .respond()
                 .withStatus(200)

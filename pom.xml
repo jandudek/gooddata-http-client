@@ -125,12 +125,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.jadler</groupId>
-            <artifactId>jadler-core</artifactId>
-            <version>${jadler.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -142,12 +136,13 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+                <version>3.1</version>
             </plugin>
         </plugins>
     </build>
 
     <properties>
-        <jadler.version>0.9.5</jadler.version>
+        <jadler.version>1.1.0</jadler.version>
         <slf4j.version>1.7.2</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
